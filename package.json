@@ -1,0 +1,22 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devaniparthg/Express.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devaniparthg/Express/issues"
+  },
+  "homepage": "https://github.com/devaniparthg/Express#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
