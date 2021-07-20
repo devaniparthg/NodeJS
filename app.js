@@ -21,19 +21,19 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 10
 //:method :url :status :response-time ms - :res[content-length]
 app.use(logger('dev'))
 
-app.use(function (req, res, next) {
-  //Enabling CORS
-  process.env.Version = req.url.split('/')[2]
-  // res.header("Access-Control-Allow-Origin", "*")
-  // res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
-  // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, contentType,Content-Type, Accept, Authorization")
-  next()
-});
+// app.use(function (req, res, next) {
+//   //Enabling CORS
+//   process.env.Version = req.url.split('/')[2]
+//   // res.header("Access-Control-Allow-Origin", "*")
+//   // res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
+//   // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, contentType,Content-Type, Accept, Authorization")
+//   next()
+// });
 
-
-app.get('/api', (req, res) => {
-  res.send('Hello World!...')
-})
+app.use('/api', require('./api'));
+// app.get('/api', (req, res) => {
+//   res.send('Hello World!...')
+// })
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
