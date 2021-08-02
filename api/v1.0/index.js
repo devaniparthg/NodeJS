@@ -8,5 +8,10 @@ router.post('/', function(req, res, next) {
 });
 
 router.post('/UserLogin', User.UserLogin);
+router.post('/UserRegistration', validator.UserRegistration,  User.UserRegistration);
+router.post('/UserDelete',  User.UserDelete);
+router.post('/UserList',  User.UserList);
+router.post('/GetState',  User.GetState);
+router.post('/GetCity',  User.GetCity);
 
 module.exports = router;

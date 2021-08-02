@@ -113,12 +113,81 @@ Common.ResFormat = (status='0', alert_type='0', message='', token='', data={}) =
         'token': token,
         'data': data,
     };
-    console.log('version : '+process.env.Version);
-    // if(process.env.Version!='v1.0'){
-    //     let encryptObj = Common.EncryptObject(encryptData);
-    //     return {QYUEIMSHNSGMDM : encryptObj};
-    // }
+    
     return encryptData;
+}
+
+Common.EncrptResFormat = (status='0', alert_type='0', message='', token='', data={}) => {
+    let encryptData = {
+        'status': status,
+        'alert': alert_type,
+        'message': message,
+        'token': token,
+        'data': data,
+    };
+    
+    let encryptObj = Common.EncryptObject(encryptData);
+    return {QYUEIMSHNSGMDM : encryptObj};
+    
+}
+
+Common.GetEmailTemplate = async (TemplateName='0') => {
+    let template_query = 'SELECT TemplateName, TemplateSubject AS Subject, TemplateBody AS Body, CCEmail FROM Mst_MessageTemplate WHERE TemplateName=? AND Active="1" LIMIT 1';
+    let template_data = await sqlhelper.select(template_query, [TemplateName], (err, res) => {
+        if (err || _.isEmpty(res)) {
+            return {};
+        } else {
+            return json_response(res[0]);
+        }
+    });
+
+    return template_data;
+};
+
+Common.SendEmailSMTP = async (MailData = {}) => {
+    const nodemailer = require('nodemailer');
+
+    const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        secure: true,
+        port: 465, 
+        auth: {
+            user: process.env.GMAIL_ACCOUNT,
+            pass: process.env.GMAIL_PASSWORD
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    });
+
+    var mailOptions = {
+        from: 'Parth Support <'+process.env.GMAIL_ACCOUNT+'>',
+        to: MailData.mail_to,
+        subject: MailData.subject,
+        // text: '',
+        html: MailData.body,
+    };
+
+    if (MailData.cc_mail!=undefined && _.size(MailData.cc_mail)>0) {
+        mailOptions.cc = MailData.cc_mail.split(',');
+    }
+
+    var response = {};
+    if (MailData.mail_to.length>0) {
+        if (process.env.IsMailSend=='1') {
+            response = await new Promise(resolve => {
+                transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                        resolve(error);
+                    } else {
+                        resolve(info);
+                    }
+                });
+            });
+        }
+    }
+    console.log(response);
+    return response;
 }
 
 

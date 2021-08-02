@@ -5,6 +5,7 @@ const port = (process.env.PORT || '8000')
 const bodyParser = require("body-parser")
 const cors = require('cors')
 var logger = require('morgan')
+var path = require('path')
 
 //enable CORS with various options.
 app.use(cors())
@@ -20,6 +21,14 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 10
 //display time and service name in terminal
 //:method :url :status :response-time ms - :res[content-length]
 app.use(logger('dev'))
+
+
+app.use(express.static('public'));
+
+
+//Serves all the request which includes /images in the url from Images folder
+app.use('/Images', express.static(__dirname + '/Images'));
+
 
 // app.use(function (req, res, next) {
 //   //Enabling CORS
